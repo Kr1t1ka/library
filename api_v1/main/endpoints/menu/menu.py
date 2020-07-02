@@ -12,6 +12,7 @@ class Menu(db.Model):
         return '<Menu %r>' % self.id
 
 
+
 class Inheritances(db.Model):
     __tablename__ = "inheritances"
 
