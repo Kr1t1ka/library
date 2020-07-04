@@ -15,21 +15,21 @@ menu_model = api.model('Menu', model={'id': fields.Integer(description='The id m
                                       'author': fields.String(description='author of the text')})
 
 menu_parser = api.parser()
-menu_parser.add_argument('menu_id', required=False, location='args')
+menu_parser.add_argument('menu_ids', required=False, location='args')
 menu_parser.add_argument('menu_name', required=False, location='args')
 menu_parser.add_argument('menu_author', required=False, location='args')
 
 
 @api.route('/')
-class MenusID(Resource):
+class MenusAPI(Resource):
 
     @api.marshal_with(menu_model)
     @api.expect(menu_parser)
     def get(self):
         args = split_dict_args(request.args)
-
-        if 'menu_id' in args:
-            menu_select = Menu.query.filter(Menu.id.in_(args['menu_id']))
+        menu_select = Menu.query
+        if 'menu_ids' in args:
+            menu_select = Menu.query.filter(Menu.id.in_(args['menu_ids']))
         if 'menu_name' in args:
             menu_select = Menu.query.filter(Menu.name.in_(args['menu_name']))
         if 'menu_author' in args:
@@ -38,8 +38,8 @@ class MenusID(Resource):
         menu = menu_select.filter_by(active=True).all()
         return menu, 200
 
-    @api.expect(menu_model)
     @api.marshal_with(menu_model)
+    @api.expect(menu_model, validate=True)
     def post(self):
         menu = Menu(**api.payload)
         try:
@@ -52,9 +52,9 @@ class MenusID(Resource):
 
 
 @api.route('/<int:menu_id>')
-class MenuID(Resource):
+class MenuAPI(Resource):
 
-    @api.expect(menu_model)
+    @api.expect(menu_model, validate=True)
     @api.marshal_with(menu_model)
     def put(self, menu_id):
         menu = Menu.query.filter_by(id=menu_id).first()
@@ -69,7 +69,7 @@ class MenuID(Resource):
             abort(422, "Something WRONG - {}".format(e))
         return menu, 200
 
-    @api.expect(menu_model)
+    @api.expect(menu_model, validate=True)
     @api.marshal_with(menu_model)
     def delete(self, menu_id):
         menu = Menu.query.filter_by(id=menu_id).first()
