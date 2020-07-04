@@ -1,3 +1,5 @@
+import datetime
+
 from api_v1.main import db
 
 
@@ -5,12 +7,14 @@ class Menu(db.Model):
     __tablename__ = "menu"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), unique=True)
-    text = db.Column(db.String(5000), unique=True)
+    name = db.Column(db.String(120), nullable=False, default='default_name')
+    text = db.Column(db.String(5000), nullable=False, default='default_text')
+    added = db.Column(db.DateTime, default=datetime.datetime.utcnow())
+    active = db.Column(db.Boolean, nullable=False, default=True)
+    author = db.Column(db.String, nullable=False, default='test_user')
 
     def __repr__(self):
         return '<Menu %r>' % self.id
-
 
 
 class Inheritances(db.Model):

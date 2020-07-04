@@ -1,47 +1,111 @@
-from flask import request
+from flask import request, abort
 from flask_restx import Namespace, Resource, fields
 
 from api_v1.main import db
 from api_v1.main.endpoints.menu.menu import Menu, Inheritances
 from api_v1.main.utils import split_dict_args
 
-api = Namespace("library_api", description="Library API")
-
+api = Namespace('library_api', description='Library AP')
 
 menu_model = api.model('Menu', model={'id': fields.Integer(description='The id menu', readonly=True),
-                                      'Name': fields.String,
-                                      'Text': fields.String})
-
+                                      'name': fields.String(description='The name menu'),
+                                      'text': fields.String(description='The text menu'),
+                                      'added': fields.DateTime(description='The date menu', readonly=True),
+                                      'active': fields.Boolean(description='activated / deactivated'),
+                                      'author': fields.String(description='author of the text')})
 
 menu_parser = api.parser()
-menu_parser.add_argument("menu_id", required=False, location="args")
+menu_parser.add_argument('menu_id', required=False, location='args')
+menu_parser.add_argument('menu_name', required=False, location='args')
+menu_parser.add_argument('menu_author', required=False, location='args')
 
 
-@api.route("/")
-class MenuID(Resource):
+@api.route('/')
+class MenusID(Resource):
+
     @api.marshal_with(menu_model)
     @api.expect(menu_parser)
     def get(self):
         args = split_dict_args(request.args)
 
-        if "menu_id" in args:
-            menu_select = Menu.query.filter(Menu.id.in_(args["menu_id"]))
+        if 'menu_id' in args:
+            menu_select = Menu.query.filter(Menu.id.in_(args['menu_id']))
+        if 'menu_name' in args:
+            menu_select = Menu.query.filter(Menu.name.in_(args['menu_name']))
+        if 'menu_author' in args:
+            menu_select = Menu.query.filter(Menu.author.in_(args['menu_author']))
 
-        menu = menu_select.all()
+        menu = menu_select.filter_by(active=True).all()
         return menu, 200
 
     @api.expect(menu_model)
+    @api.marshal_with(menu_model)
     def post(self):
-        menu = api.payload
-
-        name = menu['Name']
-        text = menu['Text']
-
-        article = Menu(name=name, text=text)
+        menu = Menu(**api.payload)
         try:
-            db.session.add(article)
+            db.session.add(menu)
             db.session.commit()
-            return "Done"
-        except:
-            return "Error_DB"
+        except Exception as e:
+            db.session.rollback()
+            abort(422, 'Something WRONG - {}'.format(e))
+        return menu, 201
+
+
+@api.route('/<int:menu_id>')
+class MenuID(Resource):
+
+    @api.expect(menu_model)
+    @api.marshal_with(menu_model)
+    def put(self, menu_id):
+        menu = Menu.query.filter_by(id=menu_id).first()
+        if not menu:
+            return {}, 404
+
+        changes = Menu.query.filter_by(id=menu_id).update(api.payload)
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            abort(422, "Something WRONG - {}".format(e))
+        return menu, 200
+
+    @api.expect(menu_model)
+    @api.marshal_with(menu_model)
+    def delete(self, menu_id):
+        menu = Menu.query.filter_by(id=menu_id).first()
+        if not menu:
+            return {}, 404
+
+        delete = Menu.query.filter_by(id=menu_id).update({'active': False})
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            abort(422, "Something WRONG - {}".format(e))
+        return menu, 200
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
