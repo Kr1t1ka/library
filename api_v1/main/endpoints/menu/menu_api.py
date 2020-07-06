@@ -5,7 +5,7 @@ from api_v1.main import db
 from api_v1.main.endpoints.menu.menu import Menu, Inheritances
 from api_v1.main.utils import split_dict_args
 
-api = Namespace('library_api', description='Library AP')
+api = Namespace('menu_api', description='menu API')
 
 menu_model = api.model('Menu', model={'id': fields.Integer(description='The id menu', readonly=True),
                                       'name': fields.String(description='The name menu'),
@@ -57,32 +57,30 @@ class MenuAPI(Resource):
     @api.expect(menu_model, validate=True)
     @api.marshal_with(menu_model)
     def put(self, menu_id):
-        menu = Menu.query.filter_by(id=menu_id).first()
-        if not menu:
+        menu = Menu.query.filter_by(id=menu_id)
+        if not menu.first():
             return {}, 404
-
-        changes = Menu.query.filter_by(id=menu_id).update(api.payload)
+        menu.update(api.payload)
         try:
             db.session.commit()
         except Exception as e:
             db.session.rollback()
             abort(422, "Something WRONG - {}".format(e))
-        return menu, 200
+        return menu.first(), 200
 
     @api.expect(menu_model, validate=True)
     @api.marshal_with(menu_model)
     def delete(self, menu_id):
-        menu = Menu.query.filter_by(id=menu_id).first()
-        if not menu:
+        menu = Menu.query.filter_by(id=menu_id)
+        if not menu.first():
             return {}, 404
-
-        delete = Menu.query.filter_by(id=menu_id).update({'active': False})
+        menu.update({'active': False})
         try:
             db.session.commit()
         except Exception as e:
             db.session.rollback()
             abort(422, "Something WRONG - {}".format(e))
-        return menu, 200
+        return menu.first(), 200
 
 
 

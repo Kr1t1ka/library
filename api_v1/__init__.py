@@ -1,8 +1,8 @@
 from flask_restx import Api
 from flask import Blueprint
 
-
-from api_v1.main.endpoints.menu.api import api as library_api
+from api_v1.main.endpoints.menu.inheritances_api import api as inheritances_api
+from api_v1.main.endpoints.menu.menu_api import api as menu_api
 import pprint
 import os
 
@@ -25,5 +25,5 @@ api = Api(
     security='apikey'
 )
 
-
-api.add_namespace(library_api)
+api.add_namespace(menu_api)
+api.add_namespace(inheritances_api)
