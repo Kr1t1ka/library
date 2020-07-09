@@ -2,7 +2,7 @@ from flask import request, abort
 from flask_restx import Namespace, Resource, fields
 
 from api_v1.main import db
-from api_v1.main.endpoints.menu.menu import Menu, Inheritances
+from api_v1.main.endpoints.menu.menu import Menu
 from api_v1.main.utils import split_dict_args
 
 api = Namespace('menu_api', description='menu API')
