@@ -5,7 +5,7 @@ from api_v1.main import db
 from api_v1.main.endpoints.menu.menu import Inheritances
 from api_v1.main.utils import split_dict_args
 
-api = Namespace('Inheritances_api', description='Inheritances API')
+api = Namespace('inheritances_api', description='Inheritances API')
 
 connection_model = api.model('Inheritance', model={'id_inher': fields.Integer(description='The id inher', readonly=True),
                                                    'menu_id_ancestor': fields.Integer(description='The id menu1'),

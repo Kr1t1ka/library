@@ -41,6 +41,6 @@ if __name__ == '__main__':
         """Monkey patch for HTTPS"""
         return url_for(self.endpoint('specs'), _external=True, _scheme='https')
     print(" * Running on {} build * ".format(env_build))
-    if env_build == "prod":
+    if env_build in ['dev', 'prod']:
         Api.specs_url = specs_url
     manager.run()
