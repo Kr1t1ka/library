@@ -28,8 +28,7 @@ class InheritancesAPI(Resource):
         args = split_dict_args(request.args)
         inhers = Inheritances.query
         if 'menu_id' in args:
-            Inheritances.menu_id_ancestor.in_(args['menu_id'])
-            inher_select_a = Inheritances.query.filter(
+            inhers = Inheritances.query.filter(
                 or_(
                     Inheritances.menu_id_ancestor.in_(args['menu_id']), 
                     and_(
