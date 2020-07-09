@@ -5,7 +5,7 @@ RUN apt-get update \
         postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install gunicorn
+RUN pip install uwsgi
 
 WORKDIR /usr/src/app
 
@@ -14,6 +14,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /usr/src/app
 
-CMD ["gunicorn"  , "-b", "0.0.0.0:5000", "app:app"]
+CMD ["/usr/src/app/start.sh"]
 
 

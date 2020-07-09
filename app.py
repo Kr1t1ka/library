@@ -13,6 +13,13 @@ app.register_blueprint(v1_api, url_prefix='/api/v1')
 
 app.app_context().push()
 
+@property
+def specs_url(self):
+    """Monkey patch for HTTPS"""
+    return url_for(self.endpoint('specs'), _external=True, _scheme='https')
+if env_build in ['dev', 'prod']:
+    Api.specs_url = specs_url
+
 manager = Manager(app)
 
 migrate = Migrate(app, db)
@@ -36,11 +43,4 @@ def after_request(response):
 
 
 if __name__ == '__main__':
-    @property
-    def specs_url(self):
-        """Monkey patch for HTTPS"""
-        return url_for(self.endpoint('specs'), _external=True, _scheme='https')
-    print(" * Running on {} build * ".format(env_build))
-    if env_build in ['dev', 'prod']:
-        Api.specs_url = specs_url
     manager.run()
