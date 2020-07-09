@@ -8,7 +8,7 @@ from api_v1.main.utils import split_dict_args
 api = Namespace('menu_api', description='menu API')
 
 menu_model = api.model('Menu', model={'id': fields.Integer(description='The id menu', readonly=True),
-                                      'name': fields.String(description='The name menu'),
+                                      'name': fields.String(description='The name mssssenu'),
                                       'text': fields.String(description='The text menu'),
                                       'added': fields.DateTime(description='The date menu', readonly=True),
                                       'active': fields.Boolean(description='activated / deactivated'),
@@ -41,14 +41,14 @@ class MenusAPI(Resource):
     @api.marshal_with(menu_model)
     @api.expect(menu_model, validate=True)
     def post(self):
-        menu = Menu(**api.payload)
+        args = Menu(**api.payload)
         try:
-            db.session.add(menu)
+            db.session.add(args)
             db.session.commit()
         except Exception as e:
             db.session.rollback()
             abort(422, 'Something WRONG - {}'.format(e))
-        return menu, 201
+        return args, 201
 
 
 @api.route('/<int:menu_id>')
