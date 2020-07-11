@@ -12,7 +12,7 @@ menu_model = api.model('Menu', model={'id': fields.Integer(description='The id m
                                       'text': fields.String(description='The text menu'),
                                       'added': fields.DateTime(description='The date menu', readonly=True),
                                       'active': fields.Boolean(description='activated / deactivated'),
-                                      'author': fields.String(description='author of the text')})
+                                      'author': fields.Integer(description='author of the text')})
 
 menu_parser = api.parser()
 menu_parser.add_argument('menu_ids', required=False, location='args')

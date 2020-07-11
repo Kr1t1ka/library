@@ -14,7 +14,7 @@ connection_model = api.model('Inheritance',
                                     'reversible': fields.Boolean(description='reversible / not reversible'),
                                     'added': fields.DateTime(description='The date menu', readonly=True),
                                     'active': fields.Boolean(description='activated / deactivated'),
-                                    'author': fields.String(description='author of the text')})
+                                    'author': fields.Integer(description='author of the text')})
 
 get_inheritances_parser = api.parser()
 get_inheritances_parser.add_argument('menu_id', required=False, location='args')
