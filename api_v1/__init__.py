@@ -1,8 +1,8 @@
 from flask_restx import Api
 from flask import Blueprint
 
-from api_v1.main.endpoints.menu.inheritances_api import api as inheritances_api
-from api_v1.main.endpoints.menu.menu_api import api as menu_api
+from api_v1.main.endpoints.inheritances.api import api as inheritances_api
+from api_v1.main.endpoints.menu.api import api as menu_api
 import pprint
 import os
 

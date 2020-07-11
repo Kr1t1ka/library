@@ -2,10 +2,10 @@ from flask import request, abort
 from flask_restx import Namespace, Resource, fields
 
 from api_v1.main import db
-from api_v1.main.endpoints.menu.menu import Menu
+from api_v1.main.endpoints.menu.db import Menu
 from api_v1.main.utils import split_dict_args
 
-api = Namespace('menu_api', description='menu API')
+api = Namespace('menu', description='menu API')
 
 menu_model = api.model('Menu', model={'id': fields.Integer(description='The id menu', readonly=True),
                                       'name': fields.String(description='The name mssssenu'),
@@ -16,8 +16,8 @@ menu_model = api.model('Menu', model={'id': fields.Integer(description='The id m
 
 menu_parser = api.parser()
 menu_parser.add_argument('menu_ids', required=False, location='args')
-menu_parser.add_argument('menu_name', required=False, location='args')
-menu_parser.add_argument('menu_author', required=False, location='args')
+menu_parser.add_argument('menu_names', required=False, location='args')
+menu_parser.add_argument('menu_authors', required=False, location='args')
 
 
 @api.route('/')
@@ -30,10 +30,10 @@ class MenusAPI(Resource):
         menu_select = Menu.query
         if 'menu_ids' in args:
             menu_select = Menu.query.filter(Menu.id.in_(args['menu_ids']))
-        if 'menu_name' in args:
-            menu_select = Menu.query.filter(Menu.name.in_(args['menu_name']))
-        if 'menu_author' in args:
-            menu_select = Menu.query.filter(Menu.author.in_(args['menu_author']))
+        if 'menu_names' in args:
+            menu_select = Menu.query.filter(Menu.name.in_(args['menu_names']))
+        if 'menu_authors' in args:
+            menu_select = Menu.query.filter(Menu.author.in_(args['menu_authors']))
 
         menu = menu_select.filter_by(active=True).all()
         return menu, 200

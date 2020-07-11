@@ -2,18 +2,19 @@ from flask import request, abort
 from flask_restx import Namespace, Resource, fields
 from sqlalchemy import or_, and_
 from api_v1.main import db
-from api_v1.main.endpoints.menu.menu import Inheritances
+from api_v1.main.endpoints.inheritances.db import Inheritances
 from api_v1.main.utils import split_dict_args
 
-api = Namespace('inheritances_api', description='Inheritances API')
+api = Namespace('inheritances', description='Inheritances API')
 
-connection_model = api.model('Inheritance', model={'id_inher': fields.Integer(description='The id inher', readonly=True),
-                                                   'menu_id_ancestor': fields.Integer(description='The id menu1'),
-                                                   'menu_id_descendant': fields.Integer(description='The id menu2'),
-                                                   'added': fields.DateTime(description='The date menu', readonly=True),
-                                                   'active': fields.Boolean(description='activated / deactivated'),
-                                                   'author': fields.String(description='author of the text')})
-
+connection_model = api.model('Inheritance',
+                             model={'id_inher': fields.Integer(description='The id inher', readonly=True),
+                                    'menu_id_ancestor': fields.Integer(description='The id menu1'),
+                                    'menu_id_descendant': fields.Integer(description='The id menu2'),
+                                    'reversible': fields.Boolean(description='reversible / not reversible'),
+                                    'added': fields.DateTime(description='The date menu', readonly=True),
+                                    'active': fields.Boolean(description='activated / deactivated'),
+                                    'author': fields.String(description='author of the text')})
 
 get_inheritances_parser = api.parser()
 get_inheritances_parser.add_argument('menu_id', required=False, location='args')
@@ -30,9 +31,9 @@ class InheritancesAPI(Resource):
         if 'menu_id' in args:
             inhers = Inheritances.query.filter(
                 or_(
-                    Inheritances.menu_id_ancestor.in_(args['menu_id']), 
+                    Inheritances.menu_id_ancestor.in_(args['menu_id']),
                     and_(
-                        Inheritances.menu_id_descendant.in_(args['menu_id']), 
+                        Inheritances.menu_id_descendant.in_(args['menu_id']),
                         Inheritances.reversible == True
                     )
                 )
@@ -54,7 +55,7 @@ class InheritancesAPI(Resource):
 
 
 @api.route('/<int:inheritances_id>')
-class InheritancesAPI(Resource):
+class InheritanceAPI(Resource):
 
     @api.expect(connection_model, validate=True)
     @api.marshal_with(connection_model)
