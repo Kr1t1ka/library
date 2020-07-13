@@ -10,7 +10,7 @@ def split_args(args: str) -> list:
 
 
 def split_dict_args(dict_args: dict) -> dict:
-    return {
+    return{
         key: split_args(value)
         for key, value in dict_args.items()
     }

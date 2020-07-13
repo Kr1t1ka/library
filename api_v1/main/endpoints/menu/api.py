@@ -81,29 +81,3 @@ class MenuAPI(Resource):
             db.session.rollback()
             abort(422, "Something WRONG - {}".format(e))
         return menu.first(), 200
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

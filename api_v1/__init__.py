@@ -3,6 +3,7 @@ from flask import Blueprint
 
 from api_v1.main.endpoints.inheritances.api import api as inheritances_api
 from api_v1.main.endpoints.menu.api import api as menu_api
+from api_v1.main.endpoints.replace.api import api as replace_api
 import pprint
 import os
 
@@ -27,3 +28,4 @@ api = Api(
 
 api.add_namespace(menu_api)
 api.add_namespace(inheritances_api)
+api.add_namespace(replace_api)
