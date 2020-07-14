@@ -21,7 +21,7 @@ replace_parser.add_argument('replace_names', required=False, location='args')
 
 
 @api.route('/')
-class ReplacesAPI(Resource):
+class ReplaceAPI(Resource):
 
     @api.marshal_with(replace_model)
     @api.expect(replace_parser)
@@ -50,7 +50,7 @@ class ReplacesAPI(Resource):
 
 
 @api.route('/<int:replace_id>')
-class ReplaceAPI(Resource):
+class MenuAPI(Resource):
 
     @api.expect(replace_model, validate=True)
     @api.marshal_with(replace_model)

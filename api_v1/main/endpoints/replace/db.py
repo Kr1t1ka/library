@@ -17,4 +17,4 @@ class Replace(db.Model):
     author = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self):
-        return '<Replace %r>' % self.id
+        return '<Menu %r>' % self.id
