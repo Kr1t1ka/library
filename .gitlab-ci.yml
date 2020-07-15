@@ -166,5 +166,3 @@ production_manual:
       when: manual
     - if: '$CI_COMMIT_BRANCH == "master" && $CANARY_ENABLED'
       when: manual
-
-

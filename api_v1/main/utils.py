@@ -9,8 +9,8 @@ def split_args(args: str) -> list:
     return [args]
 
 
-def split_dict_args(dict_args: dict) -> dict:
-    return{
-        key: split_args(value)
+def split_dict_args(dict_args: dict, args: list = []) -> dict:
+    return {
+        key: (split_args(value) if key in args or not args else value)
         for key, value in dict_args.items()
     }

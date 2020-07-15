@@ -16,5 +16,3 @@ COPY . /usr/src/app
 RUN chmod +x /usr/src/app/start.sh
 
 CMD ["/usr/src/app/start.sh"]
-
-
