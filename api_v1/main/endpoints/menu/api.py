@@ -28,7 +28,7 @@ class MenusAPI(Resource):
     @api.marshal_with(menu_model)
     @api.expect(menu_parser)
     def get(self):
-        args = split_dict_args(request.args)
+        args = split_dict_args(request.args, ['menu_ids', 'menu_names', 'menu_authors'])
         menu_select = Menu.query
         if 'menu_ids' in args:
             menu_select = Menu.query.filter(Menu.id.in_(args['menu_ids']))
@@ -39,8 +39,9 @@ class MenusAPI(Resource):
 
         menu = menu_select.filter_by(active=True).all()
 
-        if args['text_field']:
-            text_replace(menu)
+        if 'text_field' in args:
+            if args['text_fields']:
+                text_replace(menu)
 
         return menu, 200
 
