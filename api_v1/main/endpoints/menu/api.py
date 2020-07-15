@@ -19,7 +19,7 @@ menu_parser = api.parser()
 menu_parser.add_argument('menu_ids', required=False, location='args')
 menu_parser.add_argument('menu_names', required=False, location='args')
 menu_parser.add_argument('menu_authors', type=int, required=False, location='args')
-menu_parser.add_argument('text_field', type=bool, default=False, location='args')
+menu_parser.add_argument('filled_text', type=bool, default=False, location='args')
 
 
 @api.route('/')
@@ -39,8 +39,8 @@ class MenusAPI(Resource):
 
         menu = menu_select.filter_by(active=True).all()
 
-        if 'text_field' in args:
-            if args['text_fields']:
+        if 'filled_text' in args:
+            if args['filled_text']:
                 text_replace(menu)
 
         return menu, 200
