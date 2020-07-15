@@ -12,7 +12,7 @@ class Inheritances(db.Model):
     reversible = db.Column(db.Boolean, nullable=False, default=True)
     added = db.Column(db.DateTime, default=datetime.datetime.utcnow())
     active = db.Column(db.Boolean, nullable=False, default=True)
-    author = db.Column(db.Integer, nullable=False, default=0)
+    author_id = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self):
         return '<Inheritances %r>' % self.id_inher
