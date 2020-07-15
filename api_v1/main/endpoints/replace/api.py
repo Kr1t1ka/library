@@ -13,7 +13,7 @@ replace_model = api.model('Replace', model={'id': fields.Integer(description='Th
                                             'date': fields.DateTime(description='The date added replacement',
                                                                     readonly=True),
                                             'active': fields.Boolean(description='activated / deactivated'),
-                                            'author': fields.Integer(description='author of the replacement')})
+                                            'author_id': fields.Integer(description='author of the replacement')})
 
 replace_parser = api.parser()
 replace_parser.add_argument('replace_ids', required=False, location='args')

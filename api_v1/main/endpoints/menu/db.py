@@ -11,7 +11,7 @@ class Menu(db.Model):
     text = db.Column(db.String(10000), default='default_text')
     added = db.Column(db.DateTime, default=datetime.datetime.utcnow())
     active = db.Column(db.Boolean, nullable=False, default=True)
-    author = db.Column(db.Integer, nullable=False, default=0)
+    author_id = db.Column(db.Integer, nullable=False, default=0)
     inheritances = db.relationship('Inheritances',
                                    primaryjoin="or_(Menu.id==Inheritances.menu_id_descendant, Menu.id==Inheritances.menu_id_ancestor)",
                                    lazy='dynamic')

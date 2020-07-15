@@ -13,7 +13,7 @@ menu_model = api.model('Menu', model={'id': fields.Integer(description='The id m
                                       'text': fields.String(description='The text menu'),
                                       'added': fields.DateTime(description='The date menu', readonly=True),
                                       'active': fields.Boolean(description='activated / deactivated'),
-                                      'author': fields.Integer(description='author of the text')})
+                                      'author_id': fields.Integer(description='author of the text')})
 
 menu_parser = api.parser()
 menu_parser.add_argument('menu_ids', required=False, location='args')
@@ -35,7 +35,7 @@ class MenusAPI(Resource):
         if 'menu_names' in args:
             menu_select = Menu.query.filter(Menu.name.in_(args['menu_names']))
         if 'menu_authors' in args:
-            menu_select = Menu.query.filter(Menu.author.in_(args['menu_authors']))
+            menu_select = Menu.query.filter(Menu.author_id.in_(args['menu_authors']))
 
         menu = menu_select.filter_by(active=True).all()
 

@@ -14,7 +14,7 @@ class Replace(db.Model):
     value = db.Column(db.String(120), default='(перменная не определена)')
     date = db.Column(db.DateTime, default=datetime.datetime.utcnow())
     active = db.Column(db.Boolean, nullable=False, default=True)
-    author = db.Column(db.Integer, nullable=False, default=0)
+    author_id = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self):
         return '<Replace %r>' % self.id
