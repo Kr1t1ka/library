@@ -43,6 +43,9 @@ class MenusAPI(Resource):
             if args['filled_text'] == 'true':
                 text_replace(menu)
 
+        if not menu:
+            return {}, 404
+
         return menu, 200
 
     @api.marshal_with(menu_model)

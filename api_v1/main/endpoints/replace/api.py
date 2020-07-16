@@ -34,6 +34,10 @@ class ReplacesAPI(Resource):
             replace_select = Replace.query.filter(Replace.name.in_(args['replace_names']))
 
         res = replace_select.filter_by(active=True).all()
+
+        if not res:
+            return {}, 404
+
         return res, 200
 
     @api.marshal_with(replace_model)

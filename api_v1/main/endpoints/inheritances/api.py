@@ -39,6 +39,10 @@ class InheritancesAPI(Resource):
                 )
             )
         inhers = inhers.filter_by(active=True).all()
+
+        if not inhers:
+            return {}, 404
+
         return inhers, 200
 
     @api.marshal_with(connection_model)
