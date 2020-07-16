@@ -1,25 +1,23 @@
 import re
+from itertools import groupby
 
 from api_v1.main.endpoints.replace.db import Replace
 
 
-def text_replace(replace_object):
+def text_replace(filling_obj):
+    all_text = ''
 
-    names_arr = changing_array(re.findall('{\w+}', replace_object[0].text))
+    for obj in filling_obj:
+        all_text += obj.text
 
-    replace = Replace.query.all()
-    tmp = Replace.query.filter(Replace.name in names_arr).all()
+    names_arr = [el for el, _ in groupby(changing_array(re.findall('{\w+}', all_text)))]
+    replace_arr = Replace.query.filter(Replace.name.in_(names_arr)).all()
+    replace_obj = {replace.name: replace.value for replace in replace_arr}
 
-    print(replace[0].name in names_arr)
+    for obj in filling_obj:
+        obj.text = obj.text.format(**replace_obj)
 
-    variables = {}
-    for k in replace:
-        variables[k.name] = k.value
-
-    for i in replace_object:
-        i.text = i.text.format(**variables)
-
-    return replace_object
+    return filling_obj
 
 
 def changing_array(array):
@@ -27,3 +25,14 @@ def changing_array(array):
     for i in range(len(array)):
         res.append(array[i][1:-1])
     return res
+
+
+"""def text_replace(filling_obj):
+
+    for obj in filling_obj:
+        names_arr = changing_array(re.findall('{\w+}', obj.text))
+        replace_arr = Replace.query.filter(Replace.name.in_(names_arr)).all()
+        replace_obj = {replace.name: replace.value for replace in replace_arr}
+        obj.text = obj.text.format(**replace_obj)
+
+    return filling_obj"""
