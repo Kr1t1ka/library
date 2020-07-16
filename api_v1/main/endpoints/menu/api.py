@@ -40,7 +40,7 @@ class MenusAPI(Resource):
         menu = menu_select.filter_by(active=True).all()
 
         if 'filled_text' in args:
-            if args['filled_text']:
+            if args['filled_text'] == 'true':
                 text_replace(menu)
 
         return menu, 200
