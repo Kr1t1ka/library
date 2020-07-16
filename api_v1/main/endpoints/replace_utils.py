@@ -10,7 +10,8 @@ def text_replace(filling_obj):
     for obj in filling_obj:
         all_text += obj.text
 
-    names_arr = changing_array(set(chain(re.findall('{\w+}', all_text))))
+    names_arr = set(chain(re.findall('{\w+}', all_text)))
+    names_arr = [key[1:-1] for key in names_arr]
     replace_arr = Replace.query.filter(Replace.name.in_(names_arr)).all()
     replace_obj = {replace.name: replace.value for replace in replace_arr}
 
@@ -18,10 +19,3 @@ def text_replace(filling_obj):
         obj.text = obj.text.format(**replace_obj)
 
     return filling_obj
-
-
-def changing_array(array):
-    res = []
-    for key in array:
-        res.append(key[1:-1])
-    return res
