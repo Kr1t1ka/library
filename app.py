@@ -6,17 +6,19 @@ from flask import url_for
 import os
 from flask_restx import Api
 
-
 env_build = os.getenv("BUILD") or 'dev'
 app = create_app(env_build)
 app.register_blueprint(v1_api, url_prefix='/api/v1')
 
 app.app_context().push()
 
+
 @property
 def specs_url(self):
     """Monkey patch for HTTPS"""
     return url_for(self.endpoint('specs'), _external=True, _scheme='https')
+
+
 if env_build in ['dev', 'prod']:
     Api.specs_url = specs_url
 
