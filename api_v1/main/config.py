@@ -16,7 +16,6 @@ class DevelopmentConfig(Config):
 
 
 class LocalConfig(Config):
-    db_name = 'test'
     SQLALCHEMY_DATABASE_URI = postgres_database_url + db_name
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
@@ -24,6 +23,7 @@ class LocalConfig(Config):
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = postgres_database_url + db_name
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 config_by_name = dict(

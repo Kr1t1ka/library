@@ -6,7 +6,7 @@ from flask import url_for
 import os
 from flask_restx import Api
 
-env_build = os.getenv("BUILD") or 'dev'
+env_build = os.getenv("BUILD") or 'local'
 app = create_app(env_build)
 app.register_blueprint(v1_api, url_prefix='/api/v1')
 
@@ -26,9 +26,6 @@ manager = Manager(app)
 
 migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
-
-with app.app_context():
-    db.create_all()
 
 
 @app.route("/")
