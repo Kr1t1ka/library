@@ -16,6 +16,7 @@ class DevelopmentConfig(Config):
 
 
 class LocalConfig(Config):
+    db_name = 'test'
     SQLALCHEMY_DATABASE_URI = postgres_database_url + db_name
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True

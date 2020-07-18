@@ -14,3 +14,4 @@ def split_dict_args(dict_args: dict, args: list = []) -> dict:
         key: (split_args(value) if key in args or not args else value)
         for key, value in dict_args.items()
     }
+
