@@ -27,7 +27,6 @@ class SearchAPI(Resource):
             user_request = args['text'][0].replace('ваня', '')
             user_request = re.sub("^\s+|\n|\r|\s+$", '', user_request).split(' ')
             res = smart_search(user_request)
-
             return res, 200
         else:
             return {}, 404

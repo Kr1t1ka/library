@@ -18,6 +18,7 @@ def smart_search(request_arr):
                 menu_rating[i] += words_rating[i]
 
     id_response = max(menu_rating.items(), key=operator.itemgetter(1))[0]
+
     menu_response = Menu.query.filter(Menu.id.in_(str(id_response))).all()
 
     return menu_response
@@ -26,8 +27,8 @@ def smart_search(request_arr):
 def create_index_word(text):
     stopwords = {'в', 'и', 'с', 'на', 'при', 'об', 'не', 'по', 'со'}
     text = text.lower()
-    text = re.sub("^\s+|[.,«»()–:]|\s+$", ' ', text)
-    text = re.sub("^\s+|\n|\r|\s+$", '', text)
+    text = re.sub("[.,«»()–:]", ' ', text)
+    text = re.sub(r'\s+', ' ', text)
     text = [word for word in re.split("\W+", text) if word not in stopwords]
     text = {word: text.count(word) for word in set(text)}
     return text

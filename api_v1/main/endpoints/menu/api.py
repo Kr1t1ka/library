@@ -68,6 +68,7 @@ class MenuAPI(Resource):
     @api.marshal_with(menu_model)
     def put(self, menu_id):
         menu = Menu.query.filter_by(id=menu_id)
+        print(menu_id)
         if not menu.first():
             return {}, 404
         menu.update(api.payload)
