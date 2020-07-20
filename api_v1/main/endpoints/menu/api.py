@@ -4,7 +4,7 @@ from flask_restx import Namespace, Resource, fields
 from api_v1.main import db
 from api_v1.main.endpoints.menu.db import Menu
 from api_v1.main.utils import split_dict_args
-from api_v1.main.endpoints.replace_utils import text_replace
+from api_v1.main.endpoints.replace.utils.replace_utils import text_replace
 
 api = Namespace('menu', description='menu API')
 
@@ -13,7 +13,8 @@ menu_model = api.model('Menu', model={'id': fields.Integer(description='The id m
                                       'text': fields.String(description='The text menu'),
                                       'added': fields.DateTime(description='The date menu', readonly=True),
                                       'active': fields.Boolean(description='activated / deactivated'),
-                                      'author_id': fields.Integer(description='author of the text')})
+                                      'author_id': fields.Integer(description='author of the text'),
+                                      'tags': fields.String(description='The text menu')})
 
 menu_parser = api.parser()
 menu_parser.add_argument('menu_ids', required=False, location='args')
@@ -45,7 +46,6 @@ class MenusAPI(Resource):
 
         if not menu:
             return {}, 404
-
         return menu, 200
 
     @api.marshal_with(menu_model)
@@ -68,7 +68,6 @@ class MenuAPI(Resource):
     @api.marshal_with(menu_model)
     def put(self, menu_id):
         menu = Menu.query.filter_by(id=menu_id)
-        print(menu_id)
         if not menu.first():
             return {}, 404
         menu.update(api.payload)

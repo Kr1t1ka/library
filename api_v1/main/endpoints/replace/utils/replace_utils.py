@@ -5,6 +5,9 @@ from api_v1.main.endpoints.replace.db import Replace
 
 
 def text_replace(filling_obj):
+    """
+    Заменяет переменные в тексте вида {example} на соостветсвующую переменную в бд
+    """
     all_text = ''
 
     for obj in filling_obj:

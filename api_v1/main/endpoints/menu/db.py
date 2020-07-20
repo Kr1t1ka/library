@@ -12,6 +12,7 @@ class Menu(db.Model):
     added = db.Column(db.DateTime, default=datetime.datetime.utcnow())
     active = db.Column(db.Boolean, nullable=False, default=True)
     author_id = db.Column(db.Integer, nullable=False, default=0)
+    tags = db.Column(db.String(5000), default='нет тегов')
     inheritances = db.relationship('Inheritances',
                                    primaryjoin="or_(Menu.id==Inheritances.menu_id_descendant, Menu.id==Inheritances.menu_id_ancestor)",
                                    lazy='dynamic')
