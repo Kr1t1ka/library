@@ -12,7 +12,10 @@ layout = dict(zip(map(ord, "qwertyuiop[]asdfghjkl;'zxcvbnm,./`"
 
 def processing_user_request(word):
     """
-    Для передаваймого слова исправляет опечатки и меняет раскладку, если она неправельная
+    Для передаваймого слова исправляет опечатки и меняет раскладку, если она неправельная.
+    И приводит к нормальной форме.
+    :param word: не измененое слово
+    :return: word or lemmatization(res.spellsafe): исправленое слово
     """
     word = word.translate(layout)
     res = Word(word)
@@ -23,10 +26,20 @@ def processing_user_request(word):
 
 
 def lemmatization(word):
+    """
+    Приводит слово к нормальной форме.
+    :param word:
+    :return: p.normal_form: приведеное к нормальной форме слово
+    """
     morph = pymorphy2.MorphAnalyzer()
     p = morph.parse(word)[0]
     return p.normal_form
 
 
 def dict_args(args: dict):
+    """
+    Возвращает слово переданое в парсере, не обращая внимания на знаки припинаия
+    :param args:
+    :return:
+    """
     return {key: [value] for key, value in args.items()}
