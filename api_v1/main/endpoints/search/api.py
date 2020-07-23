@@ -25,6 +25,7 @@ class SearchAPI(Resource):
             user_request = user_request.lstrip().rstrip().strip()
             user_request = re.sub(r'\s+', ' ', user_request).split(' ')
             res = [processing_user_request(word) for word in user_request]
+            # res1 = {word: processing_user_request(word) for word in user_request}
             if 'ваня' in res:
                 res.remove('ваня')
             res = smart_search(res)
