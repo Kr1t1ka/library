@@ -5,6 +5,7 @@ import re
 from api_v1.main.endpoints.menu.api import menu_model
 from api_v1.main.endpoints.search.utils.request_utils import *
 from api_v1.main.endpoints.search.utils.response_utils import *
+from api_v1.main.endpoints.replace.utils.replace_utils import text_replace
 
 api = Namespace('search', description='search API')
 
@@ -28,7 +29,7 @@ class SearchAPI(Resource):
             # res1 = {word: processing_user_request(word) for word in user_request}
             if 'ваня' in res:
                 res.remove('ваня')
-            res = smart_search(res)
+            res = text_replace(smart_search(res))
             return res, 200
         else:
             return {}, 404

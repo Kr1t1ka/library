@@ -18,7 +18,7 @@ def smart_search(request_arr):
     for menu in index_lib:
         for word in request_arr:
             if word in index_lib[menu]:
-                menu_rating[menu] += 1 / len(index_lib[menu])
+                menu_rating[menu] += 3 / len(index_lib[menu])
             else:
                 menu_rating[menu] -= 1 / len(index_lib[menu])
 
