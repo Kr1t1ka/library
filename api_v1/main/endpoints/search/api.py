@@ -22,11 +22,10 @@ class SearchAPI(Resource):
         args = dict_args(request.args)
 
         if 'text' in args:
-            user_request = re.sub("[.,«»()–:!?@]", ' ', args['text'][0].lower())
+            user_request = re.sub("[\".,«»()–:!?@]", ' ', args['text'][0].lower())
             user_request = user_request.lstrip().rstrip().strip()
             user_request = re.sub(r'\s+', ' ', user_request).split(' ')
             res = [processing_user_request(word) for word in user_request]
-            # res1 = {word: processing_user_request(word) for word in user_request}
             if 'ваня' in res:
                 res.remove('ваня')
             res = text_replace(smart_search(res))

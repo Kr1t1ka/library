@@ -3,7 +3,13 @@ import operator
 from pyaspeller import Word
 import pymorphy2
 
-correct_word = {'иксс', 'исит', 'гф', 'вуц', 'ртс', 'цэуби', 'ффп', 'ино'}
+# TODO: добавить замену факуотетов на абривиатуры
+
+correct_word = {'иксс', 'исит', 'гф', 'вуц', 'ртс', 'цэуби', 'ффп', 'ино', 'студак', 'оргком', 'васька', 'научка',
+                'кнр', 'соц', 'студ', 'ксс', 'яковлевка', 'бончевские', 'соцотдел', 'бончёвские', 'купп', 'спбкт',
+                'дальнике', '086у', 'стипуха', 'сис', 'wi-fi', 'ingut', 'альняк', 'кппк', 'bonch', 'оссо',
+                'крит', 'вайфай', 'ингут', 'wifi', 'стипа', 'ссо', 'вифи'}
+
 layout = dict(zip(map(ord, "qwertyuiop[]asdfghjkl;'zxcvbnm,./`"
                            'QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?~'),
                   "йцукенгшщзхъфывапролджэячсмитьбю.ё"
@@ -17,9 +23,11 @@ def processing_user_request(word):
     :param word: не измененое слово
     :return: word or lemmatization(res.spellsafe): исправленое слово
     """
+    if word in correct_word:
+        return word
     word = word.translate(layout)
     res = Word(word)
-    if not res.correct and word not in correct_word and res.spellsafe is not None:
+    if not res.correct and res.spellsafe is not None:
         return lemmatization(res.spellsafe)
     else:
         return word
