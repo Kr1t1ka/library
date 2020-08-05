@@ -31,8 +31,11 @@ def processing_user_request(word):
     :param word: не измененое слово
     :return: word or lemmatization(res.spellsafe): исправленое слово
     """
+    translate_word = word.translate(layout)
     if word in correct_word:
         return word
+    if translate_word in correct_word:
+        return translate_word
     word = word.translate(layout)
     res = Word(word)
     if not res.correct and res.spellsafe is not None:
@@ -62,7 +65,6 @@ def dict_args(args: dict):
 
 
 def replace_abbr(text):
-    print(text)
     text = multiple_replace(text, values)
     return text
 
