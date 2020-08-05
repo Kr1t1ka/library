@@ -1,5 +1,5 @@
 from flask import request
-from flask_restx import Namespace, Resource
+from flask_restx import Namespace, Resource, fields
 import re
 
 from api_v1.main.endpoints.menu.api import menu_model
@@ -12,11 +12,14 @@ api = Namespace('search', description='search API')
 search_parser = api.parser()
 search_parser.add_argument('text', required=False, location='args')
 
+search_menu_model = api.model('Menu', model={'menu': fields.List(fields.Nested(menu_model), readonly=True),
+                                             'rating': fields.String(description='rating of the menu')})
+
 
 @api.route('/')
 class SearchAPI(Resource):
 
-    @api.marshal_with(menu_model)
+    @api.marshal_with(search_menu_model)
     @api.expect(search_parser)
     def get(self):
         args = dict_args(request.args)
@@ -28,7 +31,7 @@ class SearchAPI(Resource):
             res = [processing_user_request(word) for word in user_request]
             if 'ваня' in res:
                 res.remove('ваня')
-            res = text_replace(smart_search(res))
+            res = smart_search(res)
             return res, 200
         else:
             return {}, 404
