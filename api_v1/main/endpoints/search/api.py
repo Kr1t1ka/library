@@ -12,7 +12,7 @@ api = Namespace('search', description='search API')
 search_parser = api.parser()
 search_parser.add_argument('text', required=False, location='args')
 
-search_menu_model = api.model('Menu', model={'menu': fields.List(fields.Nested(menu_model), readonly=True),
+search_menu_model = api.model('Menu', model={'menu': fields.Nested(menu_model),
                                              'rating': fields.String(description='rating of the menu')})
 
 
@@ -25,9 +25,11 @@ class SearchAPI(Resource):
         args = dict_args(request.args)
 
         if 'text' in args:
-            user_request = re.sub("[\".,«»()–:!?@]", ' ', args['text'][0].lower())
+            user_request = re.sub("[\".,«»()–:!?@\-]", ' ', args['text'][0].lower())
             user_request = user_request.lstrip().rstrip().strip()
-            user_request = re.sub(r'\s+', ' ', user_request).split(' ')
+            user_request = re.sub(r'\s+', ' ', user_request)
+            user_request = replace_abbr(user_request).split(' ')
+            print(user_request)
             res = [processing_user_request(word) for word in user_request]
             if 'ваня' in res:
                 res.remove('ваня')

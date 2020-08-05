@@ -15,6 +15,14 @@ layout = dict(zip(map(ord, "qwertyuiop[]asdfghjkl;'zxcvbnm,./`"
                   "йцукенгшщзхъфывапролджэячсмитьбю.ё"
                   'ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,Ё'))
 
+values = {'инфокоммуникационых сети и системы': 'иксс',
+          'радиотехнологий и связи': 'ртс',
+          'информационных систем и технологий': 'исит',
+          'военный учебный центр': 'вуц',
+          'цифровой экономики управления и бизнес информатики': 'цэуби',
+          'факультет фундаментальной подготовки': 'ффп',
+          'фундаментальной подготовки': 'фп'}
+
 
 def processing_user_request(word):
     """
@@ -51,3 +59,15 @@ def dict_args(args: dict):
     :return:
     """
     return {key: [value] for key, value in args.items()}
+
+
+def replace_abbr(text):
+    print(text)
+    text = multiple_replace(text, values)
+    return text
+
+
+def multiple_replace(target_str, replace_values):
+    for i, j in replace_values.items():
+        target_str = target_str.replace(i, j)
+    return target_str
