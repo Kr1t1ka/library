@@ -20,9 +20,9 @@ def smart_search(request_arr):
     for menu in index_lib_tags:
         for word in request_arr:
             if word in index_lib_tags[menu]:
-                menu_rating[menu] += 10 / len(index_lib_tags[menu])
+                menu_rating[menu] += 5 / len(index_lib_tags[menu])
             if word in index_lib_text[menu]:
-                menu_rating[menu] += 7 / len(index_lib_tags[menu])
+                menu_rating[menu] += 2.5 / len(index_lib_tags[menu])
 
     res = [k for k, v in menu_rating.items() if v > 0]
     menu_arr = text_replace(Menu.query.filter(Menu.id.in_(res)).all())
