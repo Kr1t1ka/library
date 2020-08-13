@@ -12,8 +12,8 @@ api = Namespace('search', description='search API')
 search_parser = api.parser()
 search_parser.add_argument('text', required=False, location='args')
 
-search_menu_model = api.model('Menu', model={'menu': fields.Nested(api.model('menu_model', menu_model)),
-                                             'rating': fields.String(description='rating of the menu')})
+search_menu_model = api.model('Search_menu', model={'search_menu': fields.Nested(api.model('menu_model', menu_model)),
+                                                    'rating': fields.String(description='rating of the menu')})
 
 
 @api.route('/')
