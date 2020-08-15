@@ -26,8 +26,8 @@ menu_parser.add_argument('filled_text', type=bool, default=False, location='args
 @api.route('/')
 class MenusAPI(Resource):
 
+    @api.expect(menu_parser, validate=True)
     @api.marshal_with(menu_model)
-    @api.expect(menu_parser)
     def get(self):
         args = split_dict_args(request.args, ['menu_ids', 'menu_names', 'menu_authors'])
         menu_select = Menu.query

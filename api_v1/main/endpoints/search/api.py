@@ -12,7 +12,7 @@ api = Namespace('search', description='search API')
 search_parser = api.parser()
 search_parser.add_argument('text', required=False, location='args')
 
-search_menu_model = api.model('Search_menu', model={'search_menu': fields.Nested(api.model('menu_model', menu_model)),
+search_menu_model = api.model('Search_menu', model={'menu': fields.Nested(api.model('menu_model', menu_model)),
                                                     'rating': fields.String(description='rating of the menu')})
 
 
@@ -33,6 +33,7 @@ class SearchAPI(Resource):
             if 'ваня' in res:
                 res.remove('ваня')
             res = smart_search(res)
+            print(res)
             return res, 200
         else:
             return {}, 404
