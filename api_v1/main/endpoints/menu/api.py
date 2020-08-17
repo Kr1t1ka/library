@@ -3,6 +3,7 @@ from flask_restx import Namespace, Resource, fields
 
 from api_v1.main import db
 from api_v1.main.endpoints.menu.db import Menu
+from api_v1.main.endpoints.inheritances.api import connection_model
 from api_v1.main.utils import split_dict_args
 from api_v1.main.endpoints.replace.utils.replace_utils import text_replace
 
@@ -14,7 +15,9 @@ menu_model = api.model('Menu', model={'id': fields.Integer(description='The id m
                                       'added': fields.DateTime(description='The date menu', readonly=True),
                                       'active': fields.Boolean(description='activated / deactivated'),
                                       'author_id': fields.Integer(description='author of the text'),
-                                      'tags': fields.String(description='The text menu')})
+                                      'tags': fields.String(description='The text menu'),
+                                      'inheritances': fields.Nested(api.model('connection_model ', connection_model))
+                                      })
 
 menu_parser = api.parser()
 menu_parser.add_argument('menu_ids', required=False, location='args')
