@@ -12,7 +12,7 @@ api = Namespace('menu', description='menu API')
 attachment_model = api.model('Attachment',
                              model={'id': fields.Integer(description='The id attachment', readonly=True),
                                     'menu_id': fields.Integer(description='Thr menu id of attachment'),
-                                    'active': fields.Boolean(description='vk activated / deactivated'),
+                                    'attachment_active': fields.Boolean(description='vk activated / deactivated'),
                                     'vk_active': fields.Boolean(description='vk activated / deactivated'),
                                     'telegram_active': fields.Boolean(description='telegram activated / deactivated'),
                                     'vk_attachment': fields.String(description='vk attachment'),
@@ -57,7 +57,10 @@ class MenusAPI(Resource):
         if 'menu_authors' in args:
             menu_select = Menu.query.filter(Menu.author_id.in_(args['menu_authors']))
 
-        menu = menu_select.filter_by(active=True).all()
+        try:
+            menu = menu_select.filter_by(active=True).all()
+        except Exception as e:
+            abort(422, 'Something WRONG - {}'.format(e))
 
         if 'filled_text' in args:
             if args['filled_text'] == 'true':

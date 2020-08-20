@@ -29,7 +29,7 @@ class Attachment(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     menu_id = db.Column(db.Integer, db.ForeignKey('menu.id'), unique=True)
-    active = db.Column(db.Boolean, default=True)
+    attachment_active = db.Column(db.Boolean, default=True)
     vk_active = db.Column(db.Boolean, nullable=False, default=True)
     telegram_active = db.Column(db.Boolean, nullable=False, default=True)
     vk_attachment = db.Column(db.String(120), default='photo-128637216_456239172')
