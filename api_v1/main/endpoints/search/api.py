@@ -2,7 +2,7 @@ from flask import request
 from flask_restx import Namespace, Resource, fields
 import re
 
-from api_v1.main.endpoints.menu.api import menu_model
+from api_v1.main.endpoints.menu.api import menu_get_model
 from api_v1.main.endpoints.search.utils.request_utils import *
 from api_v1.main.endpoints.search.utils.response_utils import *
 from api_v1.main.endpoints.replace.utils.replace_utils import text_replace
@@ -12,7 +12,7 @@ api = Namespace('search', description='search API')
 search_parser = api.parser()
 search_parser.add_argument('text', required=False, location='args')
 
-search_menu_model = api.model('Search_menu', model={'menu': fields.Nested(api.model('menu_model', menu_model)),
+search_menu_model = api.model('Search_menu', model={'menu': fields.Nested(api.model('menu_model', menu_get_model)),
                                                     'rating': fields.String(description='rating of the menu')})
 
 

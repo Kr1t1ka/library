@@ -18,25 +18,33 @@ attachment_model = api.model('Attachment',
                                     'vk_attachment': fields.String(description='vk attachment'),
                                     'telegram_attachment': fields.String(description='telegram attachment')})
 
-menu_model = api.model('Menu', model={'id': fields.Integer(description='The id menu', readonly=True),
-                                      'name': fields.String(description='The name menu'),
-                                      'text': fields.String(description='The text menu'),
-                                      'added': fields.DateTime(description='The date menu', readonly=True),
-                                      'active': fields.Boolean(description='activated / deactivated'),
-                                      'author_id': fields.Integer(description='author of the text'),
-                                      'tags': fields.String(description='The text menu'),
-                                      'inheritances': fields.List(
-                                          fields.Nested(api.model('connection_model', connection_model))),
-                                      'attachment': fields.List(
-                                          fields.Nested(api.model('connection_model', attachment_model)))
-                                      })
+menu_get_model = api.model('Menu', model={'id': fields.Integer(description='The id menu', readonly=True),
+                                          'name': fields.String(description='The name menu'),
+                                          'text': fields.String(description='The text menu'),
+                                          'added': fields.DateTime(description='The date menu', readonly=True),
+                                          'active': fields.Boolean(description='activated / deactivated'),
+                                          'author_id': fields.Integer(description='author of the text'),
+                                          'tags': fields.String(description='The text menu'),
+                                          'inheritances': fields.List(
+                                              fields.Nested(api.model('connection_model', connection_model))),
+                                          'attachment': fields.List(
+                                              fields.Nested(api.model('connection_model', attachment_model)))
+                                          })
+
+menu_post_model = api.model('Menu', model={'id': fields.Integer(description='The id menu', readonly=True),
+                                           'name': fields.String(description='The name menu'),
+                                           'text': fields.String(description='The text menu'),
+                                           'added': fields.DateTime(description='The date menu', readonly=True),
+                                           'active': fields.Boolean(description='activated / deactivated'),
+                                           'author_id': fields.Integer(description='author of the text'),
+                                           'tags': fields.String(description='The text menu')
+                                           })
 
 menu_parser = api.parser()
 menu_parser.add_argument('menu_ids', required=False, location='args')
 menu_parser.add_argument('menu_names', required=False, location='args')
 menu_parser.add_argument('menu_authors', type=int, required=False, location='args')
 menu_parser.add_argument('filled_text', type=bool, default=False, location='args')
-
 
 attachment_parser = api.parser()
 attachment_parser.add_argument('menu_id', required=False, location='args')
@@ -46,7 +54,7 @@ attachment_parser.add_argument('menu_id', required=False, location='args')
 class MenusAPI(Resource):
 
     @api.expect(menu_parser, validate=True)
-    @api.marshal_with(menu_model)
+    @api.marshal_with(menu_get_model)
     def get(self):
         args = split_dict_args(request.args, ['menu_ids', 'menu_names', 'menu_authors'])
         menu_select = Menu.query
@@ -71,8 +79,8 @@ class MenusAPI(Resource):
 
         return menu, 200
 
-    @api.marshal_with(menu_model)
-    @api.expect(menu_model, validate=True)
+    @api.marshal_with(menu_post_model)
+    @api.expect(menu_post_model, validate=True)
     def post(self):
         args = Menu(**api.payload)
         try:
@@ -87,8 +95,8 @@ class MenusAPI(Resource):
 @api.route('/<int:menu_id>')
 class MenuAPI(Resource):
 
-    @api.expect(menu_model, validate=True)
-    @api.marshal_with(menu_model)
+    @api.expect(menu_post_model, validate=True)
+    @api.marshal_with(menu_post_model)
     def put(self, menu_id):
         menu = Menu.query.filter_by(id=menu_id)
         if not menu.first():
@@ -101,8 +109,8 @@ class MenuAPI(Resource):
             abort(422, "Something WRONG - {}".format(e))
         return menu.first(), 200
 
-    @api.expect(menu_model, validate=True)
-    @api.marshal_with(menu_model)
+    @api.expect(menu_post_model, validate=True)
+    @api.marshal_with(menu_post_model)
     def delete(self, menu_id):
         menu = Menu.query.filter_by(id=menu_id)
         if not menu.first():
